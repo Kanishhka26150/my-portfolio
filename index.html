@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanishka - Modern Portfolio</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* CSS Reset & Palette Variables */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        :root {
+            --bg-navy: #0F172A;          /* Deep Navy Blue */
+            --bg-dark-grey: #1E293B;     /* Rich Dark Slate Grey */
+            --bg-cream: #F8F6F0;         /* Cream/Off-White */
+            --card-cream: #FFFFFF;       /* Pure White Card Accent */
+            --text-dark: #0B0F19;        /* Soft Black */
+            --text-grey: #64748B;        /* Muted Slate Grey */
+            --text-light: #F8FAFC;       /* Light Cream White */
+            --navy-accent: #1E3A8A;      /* Royal Navy Accent */
+            --grey-border: #E2E8F0;      /* Light Grey Border */
+            --font-display: 'Syne', sans-serif;
+            --font-sans: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-cream);
+            color: var(--text-dark);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Navigation Bar */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.2rem 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.92);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--bg-cream);
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: #94A3B8;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2.2rem;
+        }
+
+        .nav-links a {
+            color: #CBD5E1;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--bg-cream);
+        }
+
+        /* Slide / Section Base */
+        .slide {
+            min-height: 100vh;
+            padding: 7rem 8% 5rem 8%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .title-light {
+            color: var(--bg-cream);
+        }
+
+        .title-dark {
+            color: var(--bg-navy);
+        }
+
+        .section-subtitle {
+            color: var(--text-grey);
+            font-size: 1rem;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        /* ================= SLIDE 1: INTRO (NO IMAGE - CENTERED) ================= */
+        #home {
+            background-color: var(--bg-navy);
+            color: var(--text-light);
+            position: relative;
+            text-align: center;
+        }
+
+        #home::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: linear-gradient(to top, var(--bg-dark-grey), transparent);
+        }
+
+        .hero-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 850px;
+            z-index: 2;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #CBD5E1;
+            padding: 0.5rem 1.4rem;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-left h1 {
+            font-family: var(--font-display);
+            font-size: 4.5rem;
+            line-height: 1.1;
+            margin-bottom: 1.2rem;
+            color: var(--bg-cream);
+        }
+
+        .hero-left h1 span {
+            color: #94A3B8;
+        }
+
+        .hero-left p {
+            font-size: 1.2rem;
+            color: #94A3B8;
+            margin: 0 auto 2.5rem auto;
+            max-width: 680px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1.2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2.2rem;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-primary {
+            background-color: var(--bg-cream);
+            color: var(--bg-navy);
+            border: 2px solid var(--bg-cream);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .btn-primary:hover {
+            background-color: #E2E8F0;
+            transform: translateY(-3px);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--bg-cream);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--bg-cream);
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-3px);
+        }
+
+        /* ================= SLIDE 2: SKILLS (DARK GREY & NAVY) ================= */
+        #skills {
+            background-color: var(--bg-dark-grey);
+            color: var(--text-light);
+            flex-direction: column;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        .skill-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 2.2rem 1.8rem;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(15, 23, 42, 0.9);
+            box-shadow: 0 20px 30px rgba(0,0,0,0.3);
+        }
+
+        .skill-number {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: #64748B;
+            margin-bottom: 1rem;
+        }
+
+        .skill-card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--bg-cream);
+            margin-bottom: 0.8rem;
+        }
+
+        .skill-card p {
+            color: #94A3B8;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* ================= SLIDE 3: PROJECTS & PERSONALITY (CREAM, NAVY & GREY) ================= */
+        #projects-about {
+            background-color: var(--bg-cream);
+            color: var(--text-dark);
+            flex-direction: column;
+        }
+
+        .split-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        .card-box {
+            background: var(--card-cream);
+            padding: 2.5rem;
+            border-radius: 24px;
+            border: 1px solid var(--grey-border);
+            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.05);
+        }
+
+        .card-box h3 {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            color: var(--bg-navy);
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--bg-cream);
+            padding-bottom: 0.8rem;
+        }
+
+        .project-card {
+            background: var(--bg-cream);
+            padding: 1.2rem;
+            border-radius: 14px;
+            margin-bottom: 1.2rem;
+            border: 1px solid #E2E8F0;
+        }
+
+        .project-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .project-card h4 {
+            color: var(--bg-navy);
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .project-card p {
+            color: var(--text-grey);
+            font-size: 0.9rem;
+        }
+
+        .trait-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin: 1.2rem 0;
+        }
+
+        .tag {
+            background: var(--bg-navy);
+            color: var(--bg-cream);
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .hobby-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 0.8rem;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .hobby-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--bg-navy);
+            border-radius: 50%;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #0B0F19;
+            color: var(--text-light);
+            text-align: center;
+            padding: 3rem 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        footer h3 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: var(--bg-cream);
+            margin-bottom: 0.5rem;
+        }
+
+        footer p {
+            color: #94A3B8;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .split-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-left h1 {
+                font-size: 3rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <nav>
+        <div class="logo">KANISHKA<span>.</span></div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects-about">Projects & About</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- SLIDE 1: INTRO SECTION (CENTERED, NO IMAGE) -->
+    <section class="slide" id="home">
+        <div class="hero-container">
+            <span class="badge">Digital Marketing & Web Design</span>
+            
+            <div class="hero-left">
+                <h1>Hello, I'm <span>Kanishka</span></h1>
+                <p>
+                    Recently completed my studies in Digital Marketing. I bring together strategic growth techniques and HTML/CSS web layout design to create impressive digital experiences.
+                </p>
+                
+                <div class="btn-group">
+                    <a href="#contact" class="btn btn-primary">Contact Me</a>
+                    <a href="#projects-about" class="btn btn-secondary">More Information</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 2: SKILLS SECTION -->
+    <section class="slide" id="skills">
+        <div class="section-header">
+            <h2 class="section-title title-light">Core Skills</h2>
+            <p class="section-subtitle">What I studied & practice in web & marketing</p>
+        </div>
+
+        <div class="skills-grid">
+            
+            <div class="skill-card">
+                <div class="skill-number">01</div>
+                <h3>Digital Marketing</h3>
+                <p>Social media strategic campaigns, audience targeting, brand reach, and digital advertising.</p>
+            </div>
+
+            <div class="skill-card">
+                <div class="skill-number">02</div>
+                <h3>HTML5 & CSS3</h3>
+                <p>Designing modern, responsive page layouts with Grid, Flexbox, and clean code hierarchy.</p>
+            </div>
+
+            <div class="skill-card">
+                <div class="skill-number">03</div>
+                <h3>SEO Optimization</h3>
+                <p>On-page optimization, keyword strategy, search positioning, and driving web traffic.</p>
+            </div>
+
+            <div class="skill-card">
+                <div class="skill-number">04</div>
+                <h3>Content Strategy</h3>
+                <p>Creative copywriting, visually appealing layout planning, and promotional execution.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SLIDE 3: PROJECTS & ABOUT SECTION -->
+    <section class="slide" id="projects-about">
+        <div style="width: 100%;">
+            <div class="section-header">
+                <h2 class="section-title title-dark">Projects & Work Ethic</h2>
+                <p class="section-subtitle">A glimpse of my practical coursework and strengths</p>
+            </div>
+            
+            <div class="split-grid">
+                
+                <!-- Left Box: Projects -->
+                <div class="card-box">
+                    <h3>Course Projects</h3>
+                    
+                    <div class="project-card">
+                        <h4>Marketing Campaign Layout</h4>
+                        <p>Designed a clean landing page layout optimized for digital marketing conversion and SEO.</p>
+                    </div>
+
+                    <div class="project-card">
+                        <h4>Responsive 3-Slide Portfolio</h4>
+                        <p>Created an interactive personal portfolio with navy, cream, and grey modern UI theme.</p>
+                    </div>
+                </div>
+
+                <!-- Right Box: Personality & Hobbies -->
+                <div class="card-box">
+                    <h3>Personality & Hobbies</h3>
+                    <p style="color: var(--text-grey); font-size: 0.95rem;">
+                        I am a <strong>hardworking</strong> individual with a <strong>confident personality</strong>, dedicated to continuous learning and creative execution.
+                    </p>
+                    
+                    <div class="trait-tags">
+                        <span class="tag">Hardworking</span>
+                        <span class="tag">Confident</span>
+                        <span class="tag">Creative</span>
+                        <span class="tag">Detail-Oriented</span>
+                    </div>
+
+                    <h4 style="margin-top: 1.5rem; color: var(--bg-navy); margin-bottom: 0.8rem;">Hobbies:</h4>
+                    <div class="hobby-item">
+                        <div class="hobby-dot"></div>
+                        <span>Exploring current Digital Marketing trends</span>
+                    </div>
+                    <div class="hobby-item">
+                        <div class="hobby-dot"></div>
+                        <span>Designing creative web & ad layouts</span>
+                    </div>
+                    <div class="hobby-item">
+                        <div class="hobby-dot"></div>
+                        <span>Content writing and branding strategy</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER / CONTACT SECTION -->
+    <footer id="contact">
+        <h3>Get In Touch</h3>
+        <p style="margin-bottom: 1rem;">Open for collaborations and coursework feedback!</p>
+        <p style="color: var(--bg-cream);"><strong>Email:</strong> kanishhka26150.ng@gmailcom | <strong>Location:</strong> India</p>
+        <p style="margin-top: 2rem; font-size: 0.85rem; color: #64748B;">© 2026 Kanishka | Modern Navy & Cream Portfolio</p>
+    </footer>
+
+</body>
+</html>
